@@ -8,7 +8,7 @@ class SecondActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second)
-        val resultRight = intent.getStringExtra("right")
-        tvResult.text = "Your score is "+resultRight.toString()
+        var rightAnsewrCount = intent.getIntExtra(MainActivity.RIGHT_ANSWERS_COUNT, 0)
+        tvResult.text = "Your score is "+rightAnsewrCount/ ${MainActivity.LEVEL_COUNT}
     }
 }

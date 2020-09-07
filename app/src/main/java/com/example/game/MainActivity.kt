@@ -11,13 +11,16 @@ import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
-        private var firstNumber: Int = 0
-        private var secondNumber: Int = 0
-        private var operator: String = ""
-        private var levels: Int = 5
-        private var answer: Int = 0
-        private var questions: Int = 0
-        private var durissan: Int = 0
+        companion object{
+            const val LEVEL_COUNT = 10
+            const val RIGHT_ANSWERS_COUNT = "rightAnswersCount"
+        }
+    private val random = Random()
+    var answer: Int = 0
+    private var currentLevelCount = 1
+    private var rightAnswers = 0
+    private var wrongAnswers = 0
+    private var operator: String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,39 +33,31 @@ class MainActivity : AppCompatActivity() {
 
         fun variantClick(button: View) {
             val saylanganJuwap = (button as Button).text.toString().toInt()
-                questions++
-            if(saylanganJuwap==answer){
-                durissan++
-                Toast.makeText(this, "Duris", Toast.LENGTH_SHORT).show()
-
-                if(questions == levels){
-                    val intent = Intent(this, SecondActivity::class.java)
-                    intent.putExtra("right", "$durissan")
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    startActivity(intent)
-                }
-                else{
-                    playGame()
-                }
+            if(saylanganJuwap == answer){
+                rightAnswers++
             }
             else{
-                if(questions == levels){
-                    val intent = Intent(this, SecondActivity::class.java)
-                    intent.putExtra("right", "$durissan")
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    startActivity(intent)
-                }
-                else{
-                    playGame()
-                }
+                wrongAnswers++
+            }
 
+
+            if(currentLevelCount== LEVEL_COUNT) {
+                val intent = Intent(this, SecondActivity::class.java)
+                intent.putExtra(RIGHT_ANSWERS_COUNT, rightAnswers)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+                finish()
+            }
+            else{
+                playGame()
             }
         }
 
 
+
     private fun playGame(){
-        firstNumber = generateRandomNumber(10, 100)
-        secondNumber = generateRandomNumber(10, 100)
+        var firstNumber = generateRandomNumber(10, 100)
+        var secondNumber = generateRandomNumber(10, 100)
         operator = generateRandomOperator()
         tvFirstNumber.text = firstNumber.toString()
         tvSecondNumber.text = secondNumber.toString()
